@@ -1,8 +1,6 @@
-
-const { createClient } = supabase; // Get the createClient function
 const supabaseUrl = 'https://ahawltslzuhdkahfnjut.supabase.co'; // Replace with your Supabase URL
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoYXdsdHNsenVoZGthaGZuanV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyMjczMDIsImV4cCI6MjA2NTgwMzMwMn0.CTrI98wfwwY9bGILRJVofdr9MYS3nAdJSrjZNYTXjeA'; // Replace with your Supabase anon key
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 async function fetchLeads() {
   const { data, error } = await supabase
