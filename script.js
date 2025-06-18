@@ -1,6 +1,6 @@
 
 const supabaseUrl = 'https://ahawltslzuhdkahfnjut.supabase.co'; // Replace with your Supabase URL
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoYXdsdHNsenVoZGthaGZuanV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyMjczMDIsImV4cCI6MjA2NTgwMzMwMn0.CTrI98wfwwY9bGILRJVofdr9MYS3nAdJSrjZNYTXjeA_KEY'; // Replace with your Supabase anon key
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoYXdsdHNsenVoZGthaGZuanV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyMjczMDIsImV4cCI6MjA2NTgwMzMwMn0.CTrI98wfwwY9bGILRJVofdr9MYS3nAdJSrjZNYTXjeA'; // Replace with your Supabase anon key
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 async function fetchLeads() {
@@ -48,3 +48,12 @@ async function updateStatus(id, newStatus) {
 }
 
 fetchLeads();
+
+// Service worker registration for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('SW registered', reg))
+      .catch(err => console.error('SW registration failed', err));
+  });
+}
