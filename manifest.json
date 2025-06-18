@@ -1,0 +1,22 @@
+
+{
+  "name": "Phoenix Solar Lead Tracker",
+  "short_name": "Solar Leads",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "Track and manage solar leads for Phoenix Solar Pros.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#2563EB"
+}
