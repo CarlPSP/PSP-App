@@ -1,16 +1,22 @@
-window.onload = async () => {
+
+document.addEventListener("DOMContentLoaded", async () => {
+  if (typeof supabase === 'undefined' || !supabase.createClient) {
+    console.error("Supabase library did not load.");
+    return;
+  }
+
   const supabaseUrl = 'https://ahawltslzuhdkahfnjut.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoYXdsdHNsenVoZGthaGZuanV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyMjczMDIsImV4cCI6MjA2NTgwMzMwMn0.CTrI98wfwwY9bGILRJVofdr9MYS3nAdJSrjZNYTXjeA';
-  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  const client = supabase.createClient(supabaseUrl, supabaseKey);
 
   async function fetchLeads() {
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from('leads')
       .select('*')
       .order('created_at', { ascending: false });
 
-    console.log('DATA:', data);
-    console.log('ERROR:', error);
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
 
     const container = document.getElementById('leadsContainer');
     container.innerHTML = '';
@@ -47,24 +53,18 @@ window.onload = async () => {
   }
 
   async function updateNotes(id, note) {
-    await supabase
-      .from('leads')
-      .update({ notes: note })
-      .eq('id', id);
+    await client.from('leads').update({ notes: note }).eq('id', id);
   }
 
   async function updateStatus(id, newStatus) {
-    await supabase
-      .from('leads')
-      .update({ status: newStatus })
-      .eq('id', id);
+    await client.from('leads').update({ status: newStatus }).eq('id', id);
   }
 
   fetchLeads();
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js')
-      .then(reg => console.log('SW registered', reg))
-      .catch(err => console.error('SW registration failed', err));
+      .then(reg => console.log('Service Worker registered:', reg))
+      .catch(err => console.error('Service Worker registration failed:', err));
   }
-};
+});
