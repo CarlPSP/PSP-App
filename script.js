@@ -9,8 +9,21 @@ async function fetchLeads() {
     .select('*')
     .order('created_at', { ascending: false });
 
+  console.log('DATA:', data);
+  console.log('ERROR:', error);
+
   const container = document.getElementById('leadsContainer');
   container.innerHTML = '';
+
+  if (error) {
+    container.innerHTML = `<p class="text-red-600">Error: ${error.message}</p>`;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    container.innerHTML = `<p class="text-gray-600">No leads found.</p>`;
+    return;
+  }
 
   data.forEach(lead => {
     const div = document.createElement('div');
@@ -18,15 +31,15 @@ async function fetchLeads() {
 
     const statusOptions = ['New', 'Contacted', 'Scheduled', 'Closed', 'Lost'];
     const statusSelect = `<select onchange="updateStatus('${lead.id}', this.value)" class="border p-1 rounded">
-      ${statusOptions.map(option => `<option value="\${option}" \${option === lead.status ? 'selected' : ''}>\${option}</option>`).join('')}
+      ${statusOptions.map(option => `<option value="${option}" ${option === lead.status ? 'selected' : ''}>${option}</option>`).join('')}
     </select>`;
 
     div.innerHTML = `
-      <strong>\${lead.name}</strong> (\${lead.city})<br>
-      \${statusSelect} - \${lead.source}<br>
-      Revenue: $\${lead.revenue ?? 0}<br>
-      <small>\${lead.created_at}</small>
-      <br><textarea onchange="updateNotes('\${lead.id}', this.value)" class="border rounded p-1 w-full mt-2">\${lead.notes ?? ''}</textarea>
+      <strong>${lead.name}</strong> (${lead.city})<br>
+      ${statusSelect} - ${lead.source}<br>
+      Revenue: $${lead.revenue ?? 0}<br>
+      <small>${lead.created_at}</small>
+      <br><textarea onchange="updateNotes('${lead.id}', this.value)" class="border rounded p-1 w-full mt-2">${lead.notes ?? ''}</textarea>
     `;
 
     container.appendChild(div);
