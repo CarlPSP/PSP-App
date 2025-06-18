@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ${statusSelect} - ${lead.source}<br>
         📞 ${lead.phone}<br>
         ✉️ ${lead.email}<br>
+        🏠 ${lead.address}<br>
         <small>${formatted}</small>
         <br><textarea onchange="updateNotes('${lead.id}', this.value)" class="border rounded p-1 w-full mt-2">${lead.notes ?? ''}</textarea>
       `;
