@@ -32,6 +32,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     data.forEach(lead => {
+      const rawDate = new Date(lead.created_at).toLocaleDateString('en-US');
+      const rawTime = new Date(lead.created_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      const formatted = `${rawDate} • ${rawTime}`;
+
       const div = document.createElement('div');
       div.className = "p-4 bg-white rounded shadow";
 
@@ -45,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         ${statusSelect} - ${lead.source}<br>
         📞 ${lead.phone}<br>
         ✉️ ${lead.email}<br>
-        <small>${lead.created_at}</small>
+        <small>${formatted}</small>
         <br><textarea onchange="updateNotes('${lead.id}', this.value)" class="border rounded p-1 w-full mt-2">${lead.notes ?? ''}</textarea>
       `;
 
