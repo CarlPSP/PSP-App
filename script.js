@@ -43,7 +43,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       div.innerHTML = `
         <strong>${lead.name}</strong> (${lead.city})<br>
         ${statusSelect} - ${lead.source}<br>
-        Revenue: $${lead.revenue ?? 0}<br>
+        📞 ${lead.phone}<br>
+        ✉️ ${lead.email}<br>
         <small>${lead.created_at}</small>
         <br><textarea onchange="updateNotes('${lead.id}', this.value)" class="border rounded p-1 w-full mt-2">${lead.notes ?? ''}</textarea>
       `;
