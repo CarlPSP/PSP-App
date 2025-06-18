@@ -1,0 +1,50 @@
+
+const supabaseUrl = 'https://ahawltslzuhdkahfnjut.supabase.co'; // Replace with your Supabase URL
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoYXdsdHNsenVoZGthaGZuanV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAyMjczMDIsImV4cCI6MjA2NTgwMzMwMn0.CTrI98wfwwY9bGILRJVofdr9MYS3nAdJSrjZNYTXjeA_KEY'; // Replace with your Supabase anon key
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+async function fetchLeads() {
+  const { data, error } = await supabase
+    .from('leads')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  const container = document.getElementById('leadsContainer');
+  container.innerHTML = '';
+
+  data.forEach(lead => {
+    const div = document.createElement('div');
+    div.className = "p-4 bg-white rounded shadow";
+
+    const statusOptions = ['New', 'Contacted', 'Scheduled', 'Closed', 'Lost'];
+    const statusSelect = `<select onchange="updateStatus('${lead.id}', this.value)" class="border p-1 rounded">
+      ${statusOptions.map(option => `<option value="\${option}" \${option === lead.status ? 'selected' : ''}>\${option}</option>`).join('')}
+    </select>`;
+
+    div.innerHTML = `
+      <strong>\${lead.name}</strong> (\${lead.city})<br>
+      \${statusSelect} - \${lead.source}<br>
+      Revenue: $\${lead.revenue ?? 0}<br>
+      <small>\${lead.created_at}</small>
+      <br><textarea onchange="updateNotes('\${lead.id}', this.value)" class="border rounded p-1 w-full mt-2">\${lead.notes ?? ''}</textarea>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+async function updateNotes(id, note) {
+  await supabase
+    .from('leads')
+    .update({ notes: note })
+    .eq('id', id);
+}
+
+async function updateStatus(id, newStatus) {
+  await supabase
+    .from('leads')
+    .update({ status: newStatus })
+    .eq('id', id);
+}
+
+fetchLeads();
